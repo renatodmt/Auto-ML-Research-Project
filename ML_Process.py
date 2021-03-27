@@ -27,7 +27,8 @@ class ML_Process:
     x = self.feature_train
     y = self.label_train
     for pre in self.pre_estimators:
-      x, y = pre.train(x=x, y=y)
+      pre.train(x=x, y=y)
+      x, y = pre.transform(x=x, y=y)
     
     self.estimator.train(x=x, y=y)
                                    
@@ -40,7 +41,7 @@ class ML_Process:
       y = self.label_train
       
     for pre in self.pre_estimators:
-      x, y = pre.predict(x=x, y=y)
+      x, y = pre.transform(x=x, y=y)
      
     y_hat = self.estimator(x=x, y=y)
     return self.score(y_hat=y_hat, y=y)
