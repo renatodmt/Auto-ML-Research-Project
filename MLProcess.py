@@ -11,10 +11,10 @@ class MLProcess:
   def __init__(self,
                estimator,
                pre_estimators,
-               score):
+               score_func):
       self.estimator = estimator
       self.pre_estimators = pre_estimators
-      self.score = score
+      self.score_func = score_func
 
   def fit(self, X, y):
       for pre in self.pre_estimators:
@@ -31,6 +31,6 @@ class MLProcess:
 
   def score(self, X, y):
       for pre in self.pre_estimators:
-          X = pre.transform(x=X)
-      y_hat = self.estimator.predict(X=X, y=y)
-      return self.score(y_hat=y_hat, y=y)
+          X = pre.transform(X=X)
+      y_hat = self.estimator.predict(X=X)
+      return self.score_func(y_pred=y_hat, y_true=y)

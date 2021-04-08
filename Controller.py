@@ -36,15 +36,16 @@ class Controller:
             n_pre_estimators = random.randint(1, len(self.pre_estimators))
             pre_estimators = random.sample(self.pre_estimators, n_pre_estimators)
             estimator = random.choice(self.estimators)
+            print(estimator)
+            print(pre_estimators)
             pipeline = MLProcess(estimator,
                                  pre_estimators,
                                  self.score_func)
             pipeline.fit(X=X_train, y=y_train)
             score = pipeline.score(X=X_test, y=y_test)
-
+            print(score)
             if score > max_score:
                 self.pipeline = pipeline
-
 
     def show_results(self):
         pass

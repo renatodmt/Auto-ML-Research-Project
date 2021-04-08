@@ -12,6 +12,10 @@ random_forest = RandomForestRegressor()
 adaboost = AdaBoostRegressor()
 score_func = r2_score
 
-Controller(features=features, target=target, score_func=score_func, pre_estimators=[vt, kbest], estimators=[random_forest,adaboost])
-Controller.run_experiment()
-
+c = Controller(features=features,
+               target=target,
+               score_func=score_func,
+               pre_estimators=[vt, kbest],
+               estimators=[random_forest,adaboost],
+               pipelines_to_test=5)
+c.run_experiment()
