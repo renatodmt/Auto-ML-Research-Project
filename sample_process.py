@@ -8,6 +8,10 @@ from Controller import Controller
 #to be inserted for reading user input json
 #import json
 #mlp_filename = "/content/ml_process.json"
+
+#link of json in github
+#mlp_filename = "https://github.com/renatodmt/Auto-ML-Research-Project/blob/main/ml_process.json"
+
 #with open (mlp_filename) as access_json:
   #read_content = json.load(access_json)
 
