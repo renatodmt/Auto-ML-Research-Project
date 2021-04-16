@@ -13,6 +13,8 @@ from sklearn.datasets import load_iris
 from sklearn import preprocessing as pre
 import json 
 mlp_filename = "/content/ml_process.json"
+#link of json in github
+#mlp_filename = "https://github.com/renatodmt/Auto-ML-Research-Project/blob/main/ml_process.json"
 
 # creating Initial value
 #init value for preprocessing JSON
