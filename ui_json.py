@@ -11,11 +11,7 @@ import pandas as pd
 import sklearn
 from sklearn.datasets import load_iris
 from sklearn import preprocessing as pre
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import Normalizer
 import json 
-from collections import defaultdict
-from collections import ChainMap
 mlp_filename = "/content/ml_process.json"
 
 # creating Initial value
