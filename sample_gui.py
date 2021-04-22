@@ -1,249 +1,130 @@
-#!/usr/bin/env python
-# coding: utf-8
+######To install this package with conda run one of the following:###
+## conda install -c conda-forge pysimplegui
+## conda install -c conda-forge/label/cf202003 pysimplegui
 
-# In[ ]:
+import PySimpleGUI as sg
 
-
-
-
-
-# In[ ]:
+sg.theme('SystemDefaultForReal')
 
 
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-from tkinter import *
-
-#Creating object 'tk' of Tk()
-tk = Tk()
-
-#Providing Geometry to the form
-tk.geometry("920x650")
-
-#Providing title to the form
-tk.title('Machine Learning Process')
-
-#Form for preprocessing method and uses place() method.
-label_0 =Label(tk,text="Preprocessing Method", width=20,font=("bold",20))
-#place method in tkinter is  geometry manager it is used to organize widgets by placing them in specific position
-label_0.place(x=90,y=60)
-
-
-###################
-#Standard Scaler
-###################
-chkVT = IntVar()
-Checkbutton(tk, text="Standard Scaler", width=20,font=('bold',11), variable=chkVT).place(x=95,y=130)
-
-#Parameter Label.
-label_1 =Label(tk,text="with_std", width=20,font=("bold",10))
-label_1.place(x=100,y=160)
+layout = [
     
-#list of Parameter.
-lstSSParam=[ 'True' ,'False']
 
-#the variable 'c' mentioned here holds String Value, by default ""
-lstWithStd=StringVar()
-droplist=OptionMenu(tk,lstWithStd, *lstSSParam)
-droplist.config(width=8)
-lstWithStd.set('True')
-droplist.place(x=240,y=160)
-
-
-
-###################
-#Normalizer
-###################
-chkNorm = IntVar()
-Checkbutton(tk, text="Normalizer         ", width=20,font=('bold',11), variable=chkNorm).place(x=95,y=190)
-
-#Parameter Label.
-label_2 =Label(tk,text="norm", width=20,font=("bold",10))
-label_2.place(x=100,y=220)
+###################################
+##Frame Layout for Pre-Estimators##
+###################################
+    [sg.Frame(layout=[
+        [sg.Checkbox('Standard Scaler', size=(12,1))],
+        [sg.Checkbox('Normalizer', size=(14,1)),
+         sg.Frame(layout=[[sg.Checkbox('l1', size=(3,1)),
+                           sg.Checkbox('l2', default=True),
+                           sg.Checkbox('max')]]
+                  ,title='norm',title_color='red', relief=sg.RELIEF_SUNKEN)],
+        
+        [sg.Checkbox('SimpleImputer', size=(14,1)), 
+         sg.Frame(layout=[[sg.Checkbox('mean'),  
+                           sg.Checkbox('median', default=True),
+                           sg.Checkbox('most_frequent'),
+                           sg.Checkbox('constant')]]
+                  ,title='strategy',title_color='red', relief=sg.RELIEF_SUNKEN)],
     
-#list of parameter.
-lstNormParam=[ 'l1' ,'l2', 'max']
-
-
-lstNorm=StringVar()
-droplist=OptionMenu(tk,lstNorm, *lstNormParam)
-droplist.config(width=8)
-lstNorm.set('l1')
-droplist.place(x=240,y=220)
-
-
-###################
-#Simple Imputer
-###################
-chkSI = IntVar()
-Checkbutton(tk, text="Simple Imputer   ", width=20,font=('bold',11), variable=chkSI).place(x=95,y=250)
-
-#Parameter label.
-label_3 =Label(tk,text="strategy", width=20,font=("bold",10))
-label_3.place(x=100,y=280)
+        [sg.Checkbox('MinMaxScaler', size=(14,1)),
+         sg.Frame(layout=[[
+             sg.Text('min'),
+             sg.Slider(range=(1, 100), orientation='h', size=(14, 20), default_value=1),
+             sg.Text('max'),sg.Slider(range=(1, 100), orientation='h', size=(14, 20), default_value=100)]]
+                  ,title='MinMax Value',title_color='red', relief=sg.RELIEF_SUNKEN)],
+        
+        [sg.Checkbox('Binarization', size=(14,1)), 
+         sg.Frame(layout=[[
+             sg.Text('min'),
+             sg.Slider(range=(1, 100), orientation='h', size=(14, 20), default_value=1),
+             sg.Text('max'),sg.Slider(range=(1, 100), orientation='h', size=(14, 20), default_value=100)]]
+                  ,title='threshold',title_color='red', relief=sg.RELIEF_SUNKEN)],
+        
+        [sg.Checkbox('VarianceThreshold', size=(14,1)),
+         sg.Frame(layout=[[
+             sg.Text('min'),
+             sg.Slider(range=(0, 10), orientation='h', size=(14, 20), default_value=0),
+             sg.Text('max'),sg.Slider(range=(0, 10), orientation='h', size=(14, 20), default_value=10)]]
+                  ,title='threshold',title_color='red', relief=sg.RELIEF_SUNKEN)],
+        
+        [sg.Checkbox('SelectKBest', size=(14,1)),
+         sg.Frame(layout=[[
+             sg.Text('min'),
+             sg.Slider(range=(1, 8), orientation='h', size=(14, 20), default_value=1),
+             sg.Text('max'),sg.Slider(range=(1, 8), orientation='h', size=(14, 20), default_value=8)]]
+                  ,title='k feat',title_color='red', relief=sg.RELIEF_SUNKEN)]
+    ],title='Pre-Estimators',title_color='Blue', relief=sg.RELIEF_SUNKEN, tooltip='Use these to choose pre-estimators'),
+     
+     
+###############################
+##Frame Layout for Estimators##
+###############################
+     sg.Frame(layout=[
+        [sg.Checkbox('RandomForestRegressor', size=(19,1))], 
+         [sg.Frame(layout=[[sg.Text('n_estimators:       '),
+                           sg.Text('min'),
+                           sg.Slider(range=(1, 1000), orientation='h', size=(14, 20), default_value=1),
+                           sg.Text('max'),sg.Slider(range=(1, 1000), orientation='h', size=(14, 20), default_value=1000)
+                          ],
+                          
+                          [sg.Text('criterion:              '),
+                           sg.Checkbox('mse'),  
+                           sg.Checkbox('mae', default=True)
+                          ],
+                          
+                          [sg.Text('max_depth:          '),
+                           sg.Text('min'),
+                           sg.Slider(range=(2, 13), orientation='h', size=(14, 20), default_value=2),
+                           sg.Text('max'),sg.Slider(range=(2, 13), orientation='h', size=(14, 20), default_value=13)
+                          ],
+                          
+                          [sg.Text('min_samples_leaf:'),
+                           sg.Text('min'),
+                           sg.Slider(range=(1, 250), orientation='h', size=(14, 20), default_value=1),
+                           sg.Text('max'),sg.Slider(range=(1, 250), orientation='h', size=(14, 20), default_value=250)
+                          ],
+                          
+                          [sg.Text('max_features:       '),
+                           sg.Checkbox('auto', default=True),  
+                           sg.Checkbox('sqrt'),
+                           sg.Checkbox('log2')
+                          ]
+                         ]
+                          
+                  ,title='RandomForestRegressor Parameters',title_color='red', relief=sg.RELIEF_SUNKEN)],
+         
+        [sg.Checkbox('Lasso', size=(14,1))],
+         [sg.Frame(layout=[[sg.Text('Alpha :         '),
+                           sg.Text('min'),
+                           sg.Slider(range=(1, 100), orientation='h', size=(14, 20), default_value=1),
+                           sg.Text('max'),sg.Slider(range=(1, 100), orientation='h', size=(14, 20), default_value=100)],
+                           
+                          [sg.Text('fit intercept : '),
+                           sg.Checkbox('True', default=True),  
+                           sg.Checkbox('False')],
+                           
+                         [sg.Text('normalize :   '),
+                           sg.Checkbox('True', default=True),  
+                           sg.Checkbox('False')]]
+                  ,title='Parameter',title_color='red', relief=sg.RELIEF_SUNKEN)],
+        
+        
     
-#List of Parameter.
-lstSIParam=[ 'mean' ,'median', 'most_frequent', 'constant']
-
-
-lstSI=StringVar()
-droplist=OptionMenu(tk,lstSI, *lstSIParam)
-droplist.config(width=8)
-lstSI.set('mean')
-droplist.place(x=240,y=280)
-
-
-###################
-#MinMaxScaler
-###################
-chkMMS = IntVar()
-Checkbutton(tk, text="MinMaxScaler     ", width=20,font=('bold',11), variable=chkMMS).place(x=95,y=310)
-
-#Parameter label.
-label_4 =Label(tk,text="range", width=20,font=("bold",10))
-label_4.place(x=100,y=340)
+        
+    ],title='Estimators',title_color='Blue', relief=sg.RELIEF_SUNKEN, tooltip='Use these to choose pre-estimators')
+    ],
     
-#Parameter Input.
-rangeMMS=Entry(tk)
-rangeMMS.place(x=240,y=340)
-
-
-###################
-#Binarization
-###################
-chkBin = IntVar()
-Checkbutton(tk, text="Binarization         ", width=20,font=('bold',11), variable=chkBin).place(x=95,y=370)
-#Parameter label.
-label_5 =Label(tk,text="threshold", width=20,font=("bold",10))
-label_5.place(x=110,y=400)
     
-#Parameter Input.
-thresholdBin=Entry(tk)
-thresholdBin.place(x=240,y=400)
-
-
-###################
-#Variance Threshold
-###################
-chkVT = IntVar()
-Checkbutton(tk, text="Variance Threshold", width=20,font=('bold',11), variable=chkVT).place(x=100,y=430)
-#Parameter label.
-label_6 =Label(tk,text="threshold", width=20,font=("bold",10))
-label_6.place(x=110,y=460)
     
-#Parameter Input.
-thresholdVT=Entry(tk)
-thresholdVT.place(x=240,y=460)
+    [sg.Submit(tooltip='Click to submit this form'), sg.Cancel()]]
 
+window = sg.Window('Machine Learning Process', layout, default_element_size=(40, 1), grab_anywhere=False)
+event, values = window.read()
+window.close()
 
-###################
-#Select KBest
-###################
-chkKBest = IntVar()
-Checkbutton(tk, text="SelectKBest        ", width=20,font=('bold',11), variable=chkKBest).place(x=95,y=490)
-#Parameter label.
-label_7 =Label(tk,text="k_feat  ", width=20,font=("bold",10))
-label_7.place(x=110,y=520)
-    
-#Parameter Input.
-k_feat=Entry(tk)
-k_feat.place(x=240,y=520)
-
-
-
-
-
-
-############################################
-#####       Machine Learning Model     #####
-############################################
-
-#this creates 'Label' widget for Registration Form and uses place() method.
-label_8 =Label(tk,text="Machine Learning Model", width=20,font=("bold",20))
-#place method in tkinter is  geometry manager it is used to organize widgets by placing them in specific position
-label_8.place(x=500,y=60)
-
-###################
-#KNN
-###################
-chkKNN = IntVar()
-Checkbutton(tk, text="KNN                  ", width=20,font=('bold',11), variable=chkKNN).place(x=490,y=130)
-
-#Parameter Label.
-label_9 =Label(tk,text="k_value", width=20,font=("bold",10))
-label_9.place(x=500,y=160)
-    
-#Parameter Input.
-k_value=Entry(tk)
-k_value.place(x=650,y=160)
-
-
-###################
-#RandomForest
-###################
-chkRForest = IntVar()
-Checkbutton(tk, text="RandomForest  ", width=20,font=('bold',11), variable=chkRForest).place(x=490,y=190)
-
-#Parameter Label.
-label_10 =Label(tk,text="n_estimator", width=20,font=("bold",10))
-label_10.place(x=510,y=220)
-    
-#Parameter Input.
-n_estimatorRF=Entry(tk)
-n_estimatorRF.place(x=650,y=220)
-
-#Parameter Label.
-label_11 =Label(tk,text="max_depth", width=20,font=("bold",10))
-label_11.place(x=510,y=250)
-    
-#Parameter Input.
-max_depth=Entry(tk)
-max_depth.place(x=650,y=250)
-
-
-###################
-#AdaBoostRegressor
-###################
-chkAdaBoost = IntVar()
-Checkbutton(tk, text="AdaBoostRegressor", width=20,font=('bold',11), variable=chkAdaBoost).place(x=502,y=280)
-
-#Parameter Label.
-label_12 =Label(tk,text="n_estimator", width=20,font=("bold",10))
-label_12.place(x=510,y=310)
-
-#Parameter Input.
-n_estimatorABR=Entry(tk)
-n_estimatorABR.place(x=650,y=310)
-
-
-###################
-#this creates button for submitting the details provides by the user
-
-
-Button(tk, text='Submit' , width=20, font =('bold',12), height = 1, bg="black",fg='white').place(x=360,y=570)
-
-#this will run the mainloop.
-tk.mainloop()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
+sg.Popup('Title',
+         'The results of the window.',
+         'The button clicked was "{}"'.format(event),
+         'The values are', values)
