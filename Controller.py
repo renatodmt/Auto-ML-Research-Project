@@ -62,7 +62,7 @@ class Controller:
         for i in range(self.pipelines_to_test):
             n_pre_estimators = random.randint(1, len(self.pre_estimators))
             pre_estimators = random.sample(self.pre_estimators, n_pre_estimators)
-            estimator =random.sample(self.estimators, 1)
+            estimator = random.sample(self.estimators, 1)
 
             pre_estimators = parameters_select(pre_estimators)
             estimator = parameters_select(estimator)
