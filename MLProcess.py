@@ -6,7 +6,6 @@ The ML Process saves the trained preprocessing algorithms and estimator to be us
 features_train =>
 """
 
-
 class MLProcess:
   def __init__(self,
                estimator,
