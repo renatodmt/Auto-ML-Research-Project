@@ -1,0 +1,23 @@
+,pre_estimators,estimator,score_train,score_test,execution_time
+0,[VarianceThreshold(threshold=4.954170004996184)],[Lasso(alpha=4.454519943719482)],0.2782825568213868,0.32875303619368756,0.011020421981811523
+1,"[CustomSelectKBest(k=8,
+                  score_func=<function mutual_info_regression at 0x000001DD16068790>)]",[Lasso(alpha=4.454519943719482)],0.5253603934406559,0.5740163547873891,0.002991199493408203
+2,"[CustomSelectKBest(k=8,
+                  score_func=<function mutual_info_regression at 0x000001DD16068790>)]","[RandomForestRegressor(max_depth=9, min_samples_leaf=240, n_estimators=471,
+                      n_jobs=-1)]",-0.019471631410316048,-0.0018246581583267751,0.4696071147918701
+3,"[CustomSelectKBest(k=8,
+                  score_func=<function mutual_info_regression at 0x000001DD16068790>)]","[RandomForestRegressor(max_depth=9, min_samples_leaf=240, n_estimators=471,
+                      n_jobs=-1)]",0.08543286976850029,0.08186798671810369,0.31171417236328125
+4,"[VarianceThreshold(threshold=4.954170004996184), CustomSelectKBest(k=8,
+                  score_func=<function mutual_info_regression at 0x000001DD16068790>)]",[Lasso(alpha=4.454519943719482)],0.6501326623272746,0.6713989271843295,0.001995086669921875
+5,"[CustomSelectKBest(k=8,
+                  score_func=<function mutual_info_regression at 0x000001DD16068790>), VarianceThreshold(threshold=4.954170004996184)]","[RandomForestRegressor(max_depth=9, min_samples_leaf=240, n_estimators=471,
+                      n_jobs=-1)]",0.2668982995938046,0.32584759958111076,0.5494949817657471
+6,"[VarianceThreshold(threshold=4.954170004996184), CustomSelectKBest(k=8,
+                  score_func=<function mutual_info_regression at 0x000001DD16068790>)]","[RandomForestRegressor(max_depth=9, min_samples_leaf=240, n_estimators=471,
+                      n_jobs=-1)]",-9.6825570561343e-06,-0.007270731384558582,0.4793887138366699
+7,[VarianceThreshold(threshold=4.954170004996184)],[Lasso(alpha=4.454519943719482)],0.34130064316932796,0.39768437842156223,0.0029916763305664062
+8,"[CustomSelectKBest(k=8,
+                  score_func=<function mutual_info_regression at 0x000001DD16068790>), VarianceThreshold(threshold=4.954170004996184)]",[Lasso(alpha=4.454519943719482)],0.0,-0.007777063714882182,0.001995086669921875
+9,"[VarianceThreshold(threshold=4.954170004996184), CustomSelectKBest(k=8,
+                  score_func=<function mutual_info_regression at 0x000001DD16068790>)]",[Lasso(alpha=4.454519943719482)],0.5562855047077282,0.5956709908095057,0.001994609832763672

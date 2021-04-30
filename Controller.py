@@ -12,10 +12,18 @@ import time
 import random
 from MLProcess import MLProcess
 
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import Lasso
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.feature_selection import VarianceThreshold, SelectKBest
+from sklearn.ensemble import RandomForestRegressor, AdaBoostRegressor
+from sklearn.feature_selection import VarianceThreshold, RFE
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.linear_model import LinearRegression
+
+from PreprocesingCustomModels.select_kbest import CustomSelectKBest
+
 
 def parameters_select(estimator_list):
     estimators = []
@@ -25,6 +33,7 @@ def parameters_select(estimator_list):
             p[i['parameters'][j]['name']] = select_parameter_value(i['parameters'][j]['values'])
         estimators.append(i['model'].set_params(**p))
     return estimators
+
 
 def select_parameter_value(values):
     if values['type'] == 'boolean':
@@ -55,11 +64,6 @@ class Controller:
         """
         Create pipelines at random score it and save the best pipeline in the object
         """
-        # TODO: Split train and test
-        # X_train = self.features
-        # y_train = self.target
-        # X_test = self.features
-        # y_test = self.target
         X_train, X_test, y_train, y_test = train_test_split(self.features,self.target, test_size=self.test_size)
 
         max_score = -float('inf')
@@ -104,6 +108,12 @@ class Controller:
                 model = RandomForestRegressor(n_jobs=-1)
             elif self.pipeline_constructor_json['estimators'][i]['model'] == 'Lasso':
                 model = Lasso()
+            elif self.pipeline_constructor_json['estimators'][i]['model'] == 'LinearRegression':
+                model = LinearRegression()
+            elif self.pipeline_constructor_json['estimators'][i]['model'] == 'KNeighborsRegressor':
+                model = KNeighborsRegressor()
+            elif self.pipeline_constructor_json['estimators'][i]['model'] == 'AdaBoostRegressor':
+                model = AdaBoostRegressor()
             else:
                 model_not_found = True
 
@@ -121,7 +131,15 @@ class Controller:
             if self.pipeline_constructor_json['pre-estimators'][i]['model'] == 'VarianceThreshold':
                 model = VarianceThreshold()
             elif self.pipeline_constructor_json['pre-estimators'][i]['model'] == 'SelectKBest':
-                model = SelectKBest()
+                model = CustomSelectKBest()
+            elif self.pipeline_constructor_json['pre-estimators'][i]['model'] == 'MinMaxScaler':
+                model = MinMaxScaler()
+            elif self.pipeline_constructor_json['pre-estimators'][i]['model'] == 'StandardScaler':
+                model = StandardScaler()
+            elif self.pipeline_constructor_json['pre-estimators'][i]['model'] == 'RFE':
+                model = RFE(estimator=DecisionTreeRegressor())
+            elif self.pipeline_constructor_json['pre-estimators'][i]['model'] == 'SimpleImputer':
+                model = SimpleImputer()
             else:
                 model_not_found = True
 
