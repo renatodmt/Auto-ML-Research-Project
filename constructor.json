@@ -98,7 +98,14 @@
           "values": {
             "type": "int",
             "min": 1,
-            "max": 8
+            "max": 13
+          }
+        },
+        "1": {
+          "name": "score_func",
+          "values": {
+            "type": "list",
+            "list": ["f_regression", "mutual_info_regression"]
           }
         }
       }

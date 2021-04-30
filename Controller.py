@@ -8,12 +8,22 @@ Glossary:
 Experiment -> Test different ML process to find the best for a given dataset and problem.
 ML Process -> Combination of Preprocessing Algorithms and Model to get to a prediction.
 """
+import time
 import random
 from MLProcess import MLProcess
 
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import Lasso
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.feature_selection import VarianceThreshold, SelectKBest
+from sklearn.ensemble import RandomForestRegressor, AdaBoostRegressor
+from sklearn.feature_selection import VarianceThreshold, RFE
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.linear_model import LinearRegression
+
+from PreprocesingCustomModels.select_kbest import CustomSelectKBest
+
 
 def parameters_select(estimator_list):
     estimators = []
@@ -23,6 +33,7 @@ def parameters_select(estimator_list):
             p[i['parameters'][j]['name']] = select_parameter_value(i['parameters'][j]['values'])
         estimators.append(i['model'].set_params(**p))
     return estimators
+
 
 def select_parameter_value(values):
     if values['type'] == 'boolean':
@@ -36,9 +47,10 @@ def select_parameter_value(values):
     return value
 
 class Controller:
-    def __init__(self, features, target, score_func, pipeline_constructor_json, pipelines_to_test):
+    def __init__(self, features, target, test_size, score_func, pipeline_constructor_json, pipelines_to_test):
         self.features = features  # The features of your dataset
         self.target = target  # y part of your dataset
+        self.test_size = test_size  # y part of your dataset
         self.score_func = score_func  # Function that you pass y and y_hat and return a score (example MAPE)
         self.pipeline_constructor_json = pipeline_constructor_json # Json with information of estimators, preprocessors and parameters that will be tested
         self.pipelines_to_test = pipelines_to_test  # Number of pipelines that will be tested
@@ -52,14 +64,12 @@ class Controller:
         """
         Create pipelines at random score it and save the best pipeline in the object
         """
-        # TODO: Split train and test
-        X_train = self.features
-        y_train = self.target
-        X_test = self.features
-        y_test = self.target
-        max_score = -float('inf')
+        X_train, X_test, y_train, y_test = train_test_split(self.features,self.target, test_size=self.test_size)
 
+        max_score = -float('inf')
+        self.results = list()
         for i in range(self.pipelines_to_test):
+            start = time.time()
             n_pre_estimators = random.randint(1, len(self.pre_estimators))
             pre_estimators = random.sample(self.pre_estimators, n_pre_estimators)
             estimator = random.sample(self.estimators, 1)
@@ -72,10 +82,20 @@ class Controller:
                                  pre_estimators,
                                  self.score_func)
             pipeline.fit(X=X_train, y=y_train)
-            score = pipeline.score(X=X_test, y=y_test)
-            print(score)
-            if score > max_score:
+            score_train = pipeline.score(X=X_train, y=y_train)
+            score_test = pipeline.score(X=X_test, y=y_test)
+            end = time.time()
+            print(score_train)
+            print(score_test)
+            if score_test > max_score:
                 self.pipeline = pipeline
+
+            self.results.append({'pre_estimators':pre_estimators,
+                            'estimator':estimator,
+                            'score_train':score_train,
+                            'score_test':score_test,
+                            'execution_time':end-start
+                            })
 
     def show_results(self):
         pass
@@ -88,6 +108,12 @@ class Controller:
                 model = RandomForestRegressor(n_jobs=-1)
             elif self.pipeline_constructor_json['estimators'][i]['model'] == 'Lasso':
                 model = Lasso()
+            elif self.pipeline_constructor_json['estimators'][i]['model'] == 'LinearRegression':
+                model = LinearRegression()
+            elif self.pipeline_constructor_json['estimators'][i]['model'] == 'KNeighborsRegressor':
+                model = KNeighborsRegressor()
+            elif self.pipeline_constructor_json['estimators'][i]['model'] == 'AdaBoostRegressor':
+                model = AdaBoostRegressor()
             else:
                 model_not_found = True
 
@@ -105,7 +131,15 @@ class Controller:
             if self.pipeline_constructor_json['pre-estimators'][i]['model'] == 'VarianceThreshold':
                 model = VarianceThreshold()
             elif self.pipeline_constructor_json['pre-estimators'][i]['model'] == 'SelectKBest':
-                model = SelectKBest()
+                model = CustomSelectKBest()
+            elif self.pipeline_constructor_json['pre-estimators'][i]['model'] == 'MinMaxScaler':
+                model = MinMaxScaler()
+            elif self.pipeline_constructor_json['pre-estimators'][i]['model'] == 'StandardScaler':
+                model = StandardScaler()
+            elif self.pipeline_constructor_json['pre-estimators'][i]['model'] == 'RFE':
+                model = RFE(estimator=DecisionTreeRegressor())
+            elif self.pipeline_constructor_json['pre-estimators'][i]['model'] == 'SimpleImputer':
+                model = SimpleImputer()
             else:
                 model_not_found = True
 

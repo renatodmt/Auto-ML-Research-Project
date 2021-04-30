@@ -1,0 +1,23 @@
+,pre_estimators,estimator,score_train,score_test,execution_time
+0,"[CustomSelectKBest(k=7,
+                  score_func=<function mutual_info_regression at 0x0000026AF4128790>)]","[RandomForestRegressor(max_depth=8, max_features='sqrt', min_samples_leaf=123,
+                      n_estimators=784, n_jobs=-1)]",-0.019813932708610205,-0.017324073084931335,1.0192711353302002
+1,"[CustomSelectKBest(k=7,
+                  score_func=<function mutual_info_regression at 0x0000026AF4128790>)]","[Lasso(alpha=0.6662138326545675, fit_intercept=False, normalize=True)]",0.626894938193783,0.6020153228945826,0.001994609832763672
+2,[VarianceThreshold(threshold=7.2103152695491755)],"[Lasso(alpha=0.6662138326545675, fit_intercept=False, normalize=True)]",0.39961570419458137,0.4182463520800218,0.003026723861694336
+3,[VarianceThreshold(threshold=7.2103152695491755)],"[Lasso(alpha=0.6662138326545675, fit_intercept=False, normalize=True)]",0.5806836952227764,0.5651517460610886,0.002997159957885742
+4,"[CustomSelectKBest(k=7,
+                  score_func=<function mutual_info_regression at 0x0000026AF4128790>), VarianceThreshold(threshold=7.2103152695491755)]","[Lasso(alpha=0.6662138326545675, fit_intercept=False, normalize=True)]",0.0,-2.6574197759643425e-05,0.001989603042602539
+5,"[VarianceThreshold(threshold=7.2103152695491755), CustomSelectKBest(k=7,
+                  score_func=<function mutual_info_regression at 0x0000026AF4128790>)]","[Lasso(alpha=0.6662138326545675, fit_intercept=False, normalize=True)]",0.4195899115379427,0.4178778695190547,0.0029883384704589844
+6,[VarianceThreshold(threshold=7.2103152695491755)],"[RandomForestRegressor(max_depth=8, max_features='sqrt', min_samples_leaf=123,
+                      n_estimators=784, n_jobs=-1)]",0.001842925176472665,0.0018235579877801111,0.5334694385528564
+7,"[CustomSelectKBest(k=7,
+                  score_func=<function mutual_info_regression at 0x0000026AF4128790>)]","[RandomForestRegressor(max_depth=8, max_features='sqrt', min_samples_leaf=123,
+                      n_estimators=784, n_jobs=-1)]",-9.62164778961494e-08,-2.977252861224855e-05,0.9364132881164551
+8,"[CustomSelectKBest(k=7,
+                  score_func=<function mutual_info_regression at 0x0000026AF4128790>), VarianceThreshold(threshold=7.2103152695491755)]","[RandomForestRegressor(max_depth=8, max_features='sqrt', min_samples_leaf=123,
+                      n_estimators=784, n_jobs=-1)]",0.47942755680735816,0.42281080090742595,0.4326498508453369
+9,"[VarianceThreshold(threshold=7.2103152695491755), CustomSelectKBest(k=7,
+                  score_func=<function mutual_info_regression at 0x0000026AF4128790>)]","[RandomForestRegressor(max_depth=8, max_features='sqrt', min_samples_leaf=123,
+                      n_estimators=784, n_jobs=-1)]",0.26611217415804367,0.2778099456232317,0.8303642272949219
