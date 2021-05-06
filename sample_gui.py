@@ -3,7 +3,7 @@
 
 
 import json
-filename = "../ML_Process_GUI/ml_process.json"
+filename = "../Auto-ML-Research-Project/constructor.json"
 init_mlp_dict = {"pre-estimators":{},"estimators":{}}
 
 
