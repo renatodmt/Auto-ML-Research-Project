@@ -4,7 +4,7 @@
 import json
 import PySimpleGUI as sg
 
-filename = "../ML_Process_GUI/constructor.json"
+filename = "constructor.json"
 init_mlp_dict = {"pre-estimators":{},"estimators":{}}
 
 
