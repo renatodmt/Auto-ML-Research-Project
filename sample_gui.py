@@ -4,6 +4,9 @@
 import json
 import PySimpleGUI as sg
 
+from sample_process import main
+from visual import show_image
+
 filename = "constructor.json"
 #init_mlp_dict = {"estimators":{}"pre-estimators":{},}
 
@@ -375,6 +378,7 @@ def parseEstimators():
     rfr_parameters = ['n_estimators', 'criterion', 'max_depth', 'min_samples_leaf', 'max_features']
     max_features = ['auto', 'sqrt', 'log2']        
     lasso_param = ['alpha', 'fit_intercept', 'normalize']
+    j=0
     if values[0] == True:
         if not bool(read_content['estimators']):
             j=0
@@ -628,14 +632,16 @@ def kNeighborsRegressor(index, ml_model):
     with open(filename, "w") as f:
         json.dump(read_content, f, indent=1)
         
-
+selections = { 'test_size' : int('20'),
+              'no_of_pipeline' : int('5')
+              }
 
 window1  = preestimator()
 window2 = None        # start off with 1 window open
 while True:             # Event Loop
     window, event, values = sg.read_all_windows()
     
-    if event in (sg.WIN_CLOSED, 'Exit'):
+    if event in (sg.WIN_CLOSED, 'Exit', 'Submit'):
         window.close()
         if window == window1:
             break
@@ -648,7 +654,13 @@ while True:             # Event Loop
 
     elif event == 'Submit':
         parseEstimators()
-        window1.close()
-        window2.close()
+        path = main(selections)
+        pop = sg.Popup('Submit')
+
+        if pop == 'OK':
+            window.close
+            show_image(path)
+
+
 
 
