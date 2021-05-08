@@ -8,7 +8,6 @@ from sample_process import main
 from visual import show_image
 
 filename = "constructor.json"
-#init_mlp_dict = {"estimators":{}"pre-estimators":{},}
 
 
 # creating Initial value
@@ -27,24 +26,24 @@ def preestimator():
     layout = [
     [sg.Frame(layout=[
         [sg.Checkbox('Standard Scaler', size=(14,1))],
-        
+
         [sg.Checkbox('MinMaxScaler', size=(14,1))],
-        
-        [sg.Checkbox('SimpleImputer', size=(14,1)), 
-         sg.Frame(layout=[[sg.Checkbox('mean'),  
+
+        [sg.Checkbox('SimpleImputer', size=(14,1)),
+         sg.Frame(layout=[[sg.Checkbox('mean'),
                            sg.Checkbox('median', default=True),
                            sg.Checkbox('most_frequent'),
                            sg.Checkbox('constant')]]
                   ,title='strategy', relief=sg.RELIEF_SUNKEN)],
-    
-        
+
+
         [sg.Checkbox('VarianceThreshold', size=(14,1)),
          sg.Frame(layout=[[
              sg.Text('min'),
              sg.Slider(range=(0, 20), orientation='h', size=(14, 16), default_value=0),
              sg.Text('max'),sg.Slider(range=(0, 20), orientation='h', size=(14, 16), default_value=10)]]
                   ,title='threshold', relief=sg.RELIEF_SUNKEN)],
-        
+
         [sg.Checkbox('SelectKBest', size=(14,1)),
          sg.Frame(layout=[[
              sg.Text('K value:   '),
@@ -54,28 +53,30 @@ def preestimator():
              [sg.Text('Function:'),sg.Checkbox('f_regression'), sg.Checkbox('mutual_info_regression')]
          ]
                   ,title='Parameters', relief=sg.RELIEF_SUNKEN)],
-        
+
         [sg.Checkbox('RFE', size=(14,1)),
          sg.Frame(layout=[
              [sg.Text('step:                        '),
               sg.Text('min: '),
-              sg.InputText('0', size=(7, 16)), 
+              sg.InputText('0', size=(7, 16)),
               sg.Text('max: '),
               sg.InputText('10', size=(7, 16))],
              [sg.Text('n_features_to_select:'),
               sg.Text('min: '),
-              sg.InputText('0', size=(7, 16)), 
+              sg.InputText('0', size=(7, 16)),
               sg.Text('max: '),
               sg.InputText('10', size=(7, 16))]
-             
-             
+
+
          ]
                   ,title='Parameters', relief=sg.RELIEF_SUNKEN)],
-        
+
     ],title='Pre-Estimators', relief=sg.RELIEF_SUNKEN, tooltip='Use these to choose pre-estimators'),
+
     ],
+
     [sg.Button('Estimator'), sg.Button('Exit')]]
-    
+
     return sg.Window('Machine Learning Process', layout, default_element_size=(40, 1), grab_anywhere=False, finalize=True)
 
 
@@ -180,6 +181,10 @@ colEstimator = [[sg.Checkbox('RandomForestRegressor', size=(19,1))],
 
 def estimator():
     layout = [[sg.Column(colEstimator, size=(510, 500), scrollable=True)],
+              [sg.Text('Test Size'),
+               sg.Slider(range=(1, 100), orientation='h', size=(14, 20), default_value=20, key='test_size'),
+               sg.Text('Number of Pipeline'),
+               sg.Slider(range=(1, 100), orientation='h', size=(14, 20), default_value=5, key='no_of_pipeline')],
         [sg.Button('Submit'), sg.Button('Exit')]]
 
     return sg.Window('Estimators', layout, grab_anywhere=False, finalize=True)
@@ -187,7 +192,7 @@ def estimator():
 
 def parsePreestimators():
     pre_model = ['StandardScaler', 'MinMaxScaler', 'SimpleImputer', 'VarianceThreshold', 'SelectKBest', 'RFE']
-            
+
     if values[0] == True:
         if not bool(read_content['pre-estimators']):
             i=0
@@ -632,15 +637,21 @@ def kNeighborsRegressor(index, ml_model):
     with open(filename, "w") as f:
         json.dump(read_content, f, indent=1)
         
-additional_parameters = { 'test_size' : int('20'),
-              'no_of_pipeline' : int('5')
-              }
+def additional_param():
+    options = {}
+    no_of_pipeline = int(values['no_of_pipeline'])
+    test_size = int(values['test_size'])
+    options = {'test_size': test_size, 'no_of_pipeline': no_of_pipeline}
+    return options
+
+
+
 
 window1  = preestimator()
 window2 = None        # start off with 1 window open
 while True:             # Event Loop
     window, event, values = sg.read_all_windows()
-    
+
     if event in (sg.WIN_CLOSED, 'Exit', 'Submit'):
         window.close()
         if window == window1:
@@ -652,9 +663,12 @@ while True:             # Event Loop
         parsePreestimators()
         window2 = estimator()
 
+
     elif event == 'Submit':
         parseEstimators()
-        path = main(selections)
+        #additional_param()
+        additional_parameters = additional_param()
+        path = main(additional_parameters)
         pop = sg.Popup('Submit')
 
         if pop == 'OK':
