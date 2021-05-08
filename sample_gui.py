@@ -5,11 +5,11 @@ import json
 import PySimpleGUI as sg
 
 filename = "constructor.json"
-init_mlp_dict = {"pre-estimators":{},"estimators":{}}
+#init_mlp_dict = {"estimators":{}"pre-estimators":{},}
 
 
 # creating Initial value
-init_mlp_dict = {"pre-estimators":{},"estimators":{}}
+init_mlp_dict = {"estimators":{},"pre-estimators":{}}
 
 with open(filename, 'w') as json_file:
   json.dump(init_mlp_dict, json_file, indent=2)
@@ -146,9 +146,9 @@ colEstimator = [[sg.Checkbox('RandomForestRegressor', size=(19,1))],
                            
                            [sg.Text('Learning Rate:     '),
                            sg.Text('min: '),
-                           sg.InputText('0', size=(16, 16), key='abr_lr_min'), 
+                           sg.InputText('1', size=(16, 16), key='abr_lr_min'),
                            sg.Text('max: '),
-                           sg.InputText('1', size=(16, 16), key='abr_lr_max')]
+                           sg.InputText('10', size=(16, 16), key='abr_lr_max')]
                           ]
                   ,title='Parameters')],
        
@@ -183,7 +183,7 @@ def estimator():
 
 
 def parsePreestimators():
-    pre_model = ['StandardScaler', 'MinMaxScale', 'SimpleImputer', 'VarianceThreshold', 'SelectKBest', 'RFE']
+    pre_model = ['StandardScaler', 'MinMaxScaler', 'SimpleImputer', 'VarianceThreshold', 'SelectKBest', 'RFE']
             
     if values[0] == True:
         if not bool(read_content['pre-estimators']):
@@ -233,7 +233,13 @@ def parsePreestimators():
 def standardScaler(index, pre_model):
                 
     preestimator_value = {index:{
-            "model":pre_model[0]
+            "model":pre_model[0],
+            "parameters": {"0":
+                           {"name": "with_std",
+                            "values": {"type": "boolean"
+                                       }
+                            }
+                       }
         }}
         
     read_content['pre-estimators'].update(preestimator_value)
@@ -252,7 +258,7 @@ def simpleImputer(index, pre_model):
         i+=1
             
     preestimator_value = {index:{
-            "model":pre_model[1], 
+            "model":pre_model[2],
             "parameters":{"0":
                           {"name":"strategy",
                            "values":{"type":"list", 
@@ -270,7 +276,13 @@ def simpleImputer(index, pre_model):
 def minMaxScaler(index, pre_model):
             
     preestimator_value = {index:{
-            "model":pre_model[2]
+            "model":pre_model[1],
+            "parameters": {"0":
+                           {"name": "copy",
+                            "values": {"type": "boolean"
+                                       }
+                            }
+                       }
         }}  
     read_content['pre-estimators'].update(preestimator_value)
         
@@ -315,7 +327,7 @@ def selectKBest(index, pre_model):
                                     }
                           },
                           "1":
-                          {"name": "function",
+                          {"name": "score_func",
                            "values":{"type":"list", 
                                      "list": skb_List
                                     }
@@ -360,7 +372,7 @@ def rfe(index, pre_model):
 
 def parseEstimators():
     ml_model = ['RandomForestRegressor', 'Lasso', 'LinearRegression', 'AdaBoostRegressor', 'KNeighborsRegressor']
-    rfr_parameters = ['n_estimators', 'criterion', 'max_depth', 'min_sample_leaf', 'max_features']
+    rfr_parameters = ['n_estimators', 'criterion', 'max_depth', 'min_samples_leaf', 'max_features']
     max_features = ['auto', 'sqrt', 'log2']        
     lasso_param = ['alpha', 'fit_intercept', 'normalize']
     if values[0] == True:
