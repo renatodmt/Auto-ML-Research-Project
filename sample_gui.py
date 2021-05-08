@@ -632,7 +632,7 @@ def kNeighborsRegressor(index, ml_model):
     with open(filename, "w") as f:
         json.dump(read_content, f, indent=1)
         
-selections = { 'test_size' : int('20'),
+additional_parameters = { 'test_size' : int('20'),
               'no_of_pipeline' : int('5')
               }
 
