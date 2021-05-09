@@ -23,7 +23,7 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.linear_model import LinearRegression
 
 from PreprocesingCustomModels.select_kbest import CustomSelectKBest
-
+from visual import show_results
 
 def parameters_select(estimator_list):
     estimators = []
@@ -84,6 +84,8 @@ class Controller:
             pipeline.fit(X=X_train, y=y_train)
             score_train = pipeline.score(X=X_train, y=y_train)
             score_test = pipeline.score(X=X_test, y=y_test)
+            y_pred = pipeline.predict(X_test)
+            show_results(y_test, y_pred, estimator)
             end = time.time()
             print(score_train)
             print(score_test)

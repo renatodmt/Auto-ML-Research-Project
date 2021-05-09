@@ -1,0 +1,6 @@
+,pre_estimators,estimator,score_train,score_test,execution_time
+0,[StandardScaler()],"[Lasso(alpha=65, fit_intercept=False)]",-5.840551698693379,-5.651626126173774,0.7676324844360352
+1,[StandardScaler()],"[Lasso(alpha=65, fit_intercept=False)]",0.0,-0.01389006289221384,0.5531866550445557
+2,[StandardScaler()],"[Lasso(alpha=65, fit_intercept=False)]",0.0,-0.01389006289221384,0.5082204341888428
+3,[StandardScaler()],"[Lasso(alpha=65, fit_intercept=False)]",0.4447443282669524,0.4579476546346549,0.538978099822998
+4,[StandardScaler()],"[Lasso(alpha=65, fit_intercept=False)]",-6.055874036766706,-5.945818323917076,2.2467315196990967
