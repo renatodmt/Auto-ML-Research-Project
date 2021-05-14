@@ -41,7 +41,7 @@ def preestimator():
          sg.Frame(layout=[[
              sg.Text('min'),
              sg.Slider(range=(0, 20), orientation='h', size=(14, 16), default_value=0),
-             sg.Text('max'),sg.Slider(range=(0, 20), orientation='h', size=(14, 16), default_value=10)]]
+             sg.Text('max'),sg.Slider(range=(0, 20), orientation='h', size=(14, 16), default_value=1)]]
                   ,title='threshold', relief=sg.RELIEF_SUNKEN)],
 
         [sg.Checkbox('SelectKBest', size=(14,1)),
